@@ -1,14 +1,16 @@
-package kelly.chiarotti.mareu;
+package kelly.chiarotti.mareu.ui.meeting_form;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import kelly.chiarotti.mareu.R;
+
+public class FormMeeting extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_form_meeting);
     }
 }
