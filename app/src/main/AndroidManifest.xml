@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_people_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.meeting_form.FormMeeting"></activity>
-        <activity android:name=".ui.meeting_list.ListMeeting">
+        <activity android:name=".ui.meeting_form.FormMeetingActivity"></activity>
+        <activity android:name=".ui.meeting_list.ListMeetingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,5 +18,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

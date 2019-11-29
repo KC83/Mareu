@@ -1,12 +1,12 @@
 package kelly.chiarotti.mareu.ui.meeting_form;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import kelly.chiarotti.mareu.R;
 
-public class FormMeeting extends AppCompatActivity {
+public class FormMeetingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

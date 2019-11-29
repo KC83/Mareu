@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Ma réu</string>
+    <string name="list_color">list_color</string>
+    <string name="list_delete_button">list_delete_button</string>
+    <string name="form_date">Date</string>
+    <string name="form_subject">Sujet</string>
+    <string name="list_add_button">list_add_button</string>
 </resources>

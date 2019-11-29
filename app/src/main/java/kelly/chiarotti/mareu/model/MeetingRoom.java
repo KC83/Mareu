@@ -3,15 +3,17 @@ package kelly.chiarotti.mareu.model;
 public class MeetingRoom {
     private Integer mId;
     private String mName;
+    private Integer mColor;
 
     /**
      * Constructor
      * @param id
      * @param name
      */
-    public MeetingRoom(Integer id, String name) {
+    public MeetingRoom(Integer id, String name, Integer color) {
         mId = id;
         mName = name;
+        mColor = color;
     }
 
     /**
@@ -44,5 +46,21 @@ public class MeetingRoom {
      */
     public void setName(String name) {
         mName = name;
+    }
+
+    /**
+     * Get value of mColor
+     * @return
+     */
+    public Integer getColor() {
+        return mColor;
+    }
+
+    /**
+     * Set value of mColor
+     * @param color
+     */
+    public void setColor(Integer color) {
+        mColor = color;
     }
 }
