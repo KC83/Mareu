@@ -6,6 +6,7 @@ import java.util.List;
 public class Meeting {
     private Integer mId;
     private Date mDate;
+    private Date mTime;
     private String mSubject;
     private MeetingRoom mMeetingRoom;
     private List<Participant> mParticipants;
@@ -16,9 +17,10 @@ public class Meeting {
      * @param date
      * @param subject
      */
-    public Meeting(Integer id, Date date, String subject, MeetingRoom meetingRoom, List<Participant> participants) {
+    public Meeting(Integer id, Date date, Date time, String subject, MeetingRoom meetingRoom, List<Participant> participants) {
         this.mId = id;
         this.mDate = date;
+        this.mTime = time;
         this.mSubject = subject;
         this.mMeetingRoom = meetingRoom;
         this.mParticipants = participants;
@@ -54,6 +56,22 @@ public class Meeting {
      */
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    /**
+     * Get value of mTime
+     * @return mTime
+     */
+    public Date getTime() {
+        return mTime;
+    }
+
+    /**
+     * Set value of mTime
+     * @param time
+     */
+    public void setTime(Date time) {
+        mTime = time;
     }
 
     /**

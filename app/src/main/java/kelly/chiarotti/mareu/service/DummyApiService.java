@@ -61,7 +61,7 @@ public class DummyApiService implements ApiService {
     }
 
     @Override
-    public void deleteMeeting(Meeting meeting) {
+    public void deleteMeeting(Meeting meeting)  {
         mMeetings.remove(meeting);
     }
 
@@ -73,8 +73,8 @@ public class DummyApiService implements ApiService {
     @Override
     public List<Meeting> generateMeetings() {
         List<Meeting> dummyMeetings  = Arrays.asList(
-                new Meeting(1, new Date(), "Sujet", getMeetingRooms().get(0), getParticipants()),
-                new Meeting(2, new Date(), "Sujet 1", getMeetingRooms().get(2), getParticipants())
+                new Meeting(1, new Date(), new Date(), "Sujet", getMeetingRooms().get(0), getParticipants()),
+                new Meeting(2, new Date(), new Date(), "Sujet 1", getMeetingRooms().get(2), getParticipants())
         );
         return new ArrayList<>(dummyMeetings);
     }

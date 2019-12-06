@@ -1,5 +1,7 @@
 package kelly.chiarotti.mareu.ui.meeting_list;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -18,15 +22,20 @@ import kelly.chiarotti.mareu.di.DI;
 import kelly.chiarotti.mareu.model.Meeting;
 import kelly.chiarotti.mareu.model.Participant;
 import kelly.chiarotti.mareu.service.ApiService;
+import kelly.chiarotti.mareu.service.Constants;
+import kelly.chiarotti.mareu.ui.meeting_form.FormMeetingActivity;
 
 public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.ViewHolder> {
 
+    private ApiService mApiService;
     private List<Meeting> mMeetings;
+    private Context mContext;
 
-    public ListMeetingAdapter() {
+    ListMeetingAdapter(List<Meeting> items, Context context) {
         super();
-        ApiService apiService = DI.getApiService();
-        mMeetings = apiService.getMeetings();
+        mApiService = DI.getApiService();
+        mMeetings = items;
+        mContext = context;
     }
 
     @Override
@@ -49,27 +58,32 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
         holder.mColor.setBackgroundColor(meeting.getMeetingRoom().getColor());
         holder.mText.setText(meeting.getSubject());
 
-        String participants = "";
+        StringBuilder participants = new StringBuilder();
         List<Participant> participantsList = meeting.getParticipants();
 
         int i = 0;
-
         for (Participant participant : participantsList) {
             i++;
 
-            participants += participant.getEmail();
+            participants.append(participant.getEmail());
             if (i != participantsList.size()) {
-                participants += ",";
+                participants.append(",");
             }
         }
-        holder.mParticipants.setText(participants);
+        holder.mParticipants.setText(participants.toString());
 
-
+        // Action to delete a meeting
         holder.mDeleteButton.setOnClickListener(v -> {
-            ApiService apiService = DI.getApiService();
-            apiService.deleteMeeting(meeting);
+            mApiService.deleteMeeting(meeting);
+            notifyItemRemoved(position); // RELOAD THE LIST
+        });
 
-            System.out.println("Delete : "+meeting.getSubject());
+        // Action to update the meeting
+        holder.itemView.setOnClickListener(v -> {
+            Intent formMeetingActivityIntent = new Intent(mContext, FormMeetingActivity.class);
+            formMeetingActivityIntent.putExtra(Constants.EXTRA_MEETING, new Gson().toJson(meeting));
+            formMeetingActivityIntent.putExtra(Constants.EXTRA_MEETING_POSITION, position);
+            mContext.startActivity(formMeetingActivityIntent);
         });
     }
 
@@ -88,4 +102,6 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
             ButterKnife.bind(this, view);
         }
     }
+
+
 }
