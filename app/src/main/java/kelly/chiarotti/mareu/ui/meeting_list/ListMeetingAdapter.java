@@ -1,7 +1,5 @@
 package kelly.chiarotti.mareu.ui.meeting_list;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,31 +9,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kelly.chiarotti.mareu.R;
-import kelly.chiarotti.mareu.di.DI;
 import kelly.chiarotti.mareu.model.Meeting;
 import kelly.chiarotti.mareu.model.Participant;
-import kelly.chiarotti.mareu.service.ApiService;
-import kelly.chiarotti.mareu.service.Constants;
-import kelly.chiarotti.mareu.ui.meeting_form.FormMeetingActivity;
 
 public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.ViewHolder> {
 
-    private ApiService mApiService;
     private List<Meeting> mMeetings;
-    private Context mContext;
+    private ListMeetingListener mListMeetingListener;
 
-    ListMeetingAdapter(List<Meeting> items, Context context) {
+    interface ListMeetingListener {
+        void onClick(Meeting meeting, int position);
+        void onDelete(Meeting meeting, int position);
+    }
+
+    ListMeetingAdapter(List<Meeting> items, ListMeetingListener listener) {
         super();
-        mApiService = DI.getApiService();
         mMeetings = items;
-        mContext = context;
+        mListMeetingListener = listener;
     }
 
     @Override
@@ -53,9 +48,10 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Meeting meeting = mMeetings.get(position);
+        Meeting meeting = mMeetings.get(holder.getAdapterPosition());
 
-        holder.mColor.setBackgroundColor(meeting.getMeetingRoom().getColor());
+        //holder.mColor.setBackgroundColor(meeting.getMeetingRoom().getColor());
+        holder.mColor.setColorFilter(meeting.getMeetingRoom().getColor());
         holder.mText.setText(meeting.getSubject());
 
         StringBuilder participants = new StringBuilder();
@@ -72,19 +68,18 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
         }
         holder.mParticipants.setText(participants.toString());
 
-        // Action to delete a meeting
-        holder.mDeleteButton.setOnClickListener(v -> {
-            mApiService.deleteMeeting(meeting);
-            notifyItemRemoved(position); // RELOAD THE LIST
-        });
 
         // Action to update the meeting
         holder.itemView.setOnClickListener(v -> {
-            Intent formMeetingActivityIntent = new Intent(mContext, FormMeetingActivity.class);
-            formMeetingActivityIntent.putExtra(Constants.EXTRA_MEETING, new Gson().toJson(meeting));
-            formMeetingActivityIntent.putExtra(Constants.EXTRA_MEETING_POSITION, position);
-            mContext.startActivity(formMeetingActivityIntent);
+            mListMeetingListener.onClick(meeting, holder.getAdapterPosition()); // CALLBACK
         });
+
+        // Action to delete a meeting
+        holder.mDeleteButton.setOnClickListener(v -> {
+            mListMeetingListener.onDelete(meeting, holder.getAdapterPosition()); // CALLBACK
+        });
+
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

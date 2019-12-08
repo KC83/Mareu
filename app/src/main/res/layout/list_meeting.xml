@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/colorPrimary"
+        android:src="@drawable/round"
         android:contentDescription="@string/list_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,6 +41,8 @@
         android:textStyle="italic"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_list_delete_button"
         app:layout_constraintStart_toEndOf="@id/item_list_color"
