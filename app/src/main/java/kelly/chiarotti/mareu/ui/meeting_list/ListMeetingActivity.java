@@ -1,9 +1,11 @@
 package kelly.chiarotti.mareu.ui.meeting_list;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,22 +57,40 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.CODE_REQUEST_FORM_MEETING) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    int position = data.getIntExtra(Constants.EXTRA_MEETING_POSITION, 0);
+                    adapter.notifyItemRemoved(position); // RELOAD THE LIST
+                }
+            }
+        }
+    }
+
+    @Override
     public void onClick(View v) {
+        // Button new meeting
         Intent formMeetingActivityIntent = new Intent(ListMeetingActivity.this, FormMeetingActivity.class);
         startActivity(formMeetingActivityIntent);
     }
 
     @Override
     public void onClick(Meeting meeting, int position) {
+        // onClick on one of the meeting
         Intent formMeetingActivityIntent = new Intent(ListMeetingActivity.this, FormMeetingActivity.class);
         formMeetingActivityIntent.putExtra(Constants.EXTRA_MEETING, new Gson().toJson(meeting));
         formMeetingActivityIntent.putExtra(Constants.EXTRA_MEETING_POSITION, position);
-        ListMeetingActivity.this.startActivity(formMeetingActivityIntent);
+        //ListMeetingActivity.this.startActivity(formMeetingActivityIntent);
+        ListMeetingActivity.this.startActivityForResult(formMeetingActivityIntent, Constants.CODE_REQUEST_FORM_MEETING);
     }
 
     @Override
     public void onDelete(Meeting meeting, int position) {
-        mApiService.deleteMeeting(meeting);
+        // onDelete on one of the meeting
+        mApiService.deleteMeeting(meeting,null);
         adapter.notifyItemRemoved(position); // RELOAD THE LIST
     }
 }

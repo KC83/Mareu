@@ -19,11 +19,11 @@ public class DummyApiService implements ApiService {
     @Override
     public List<Participant> generateParticipants() {
         List<Participant> dummyParticipants  = Arrays.asList(
-                new Participant(1, "jean@gmail.com"),
-                new Participant(2, "marc@gmail.com"),
-                new Participant(3, "laura@gmail.com"),
-                new Participant(4, "john@gmail.com"),
-                new Participant(5, "lola@gmail.com")
+                new Participant(1, "jean@gmail.com","Jean"),
+                new Participant(2, "marc@gmail.com","Marc"),
+                new Participant(3, "laura@gmail.com","Laura"),
+                new Participant(4, "john@gmail.com","John"),
+                new Participant(5, "lola@gmail.com","Lola")
         );
         return new ArrayList<>(dummyParticipants);
     }
@@ -61,8 +61,12 @@ public class DummyApiService implements ApiService {
     }
 
     @Override
-    public void deleteMeeting(Meeting meeting)  {
-        mMeetings.remove(meeting);
+    public void deleteMeeting(Meeting meeting, Integer position)  {
+        if (meeting != null) {
+            mMeetings.remove(meeting);
+        } else if (position != null) {
+            mMeetings.remove(mMeetings.get(position));
+        }
     }
 
     @Override

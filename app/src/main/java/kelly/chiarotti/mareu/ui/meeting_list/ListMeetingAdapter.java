@@ -1,5 +1,6 @@
 package kelly.chiarotti.mareu.ui.meeting_list;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,13 +48,13 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Meeting meeting = mMeetings.get(holder.getAdapterPosition());
 
-        //holder.mColor.setBackgroundColor(meeting.getMeetingRoom().getColor());
         holder.mColor.setColorFilter(meeting.getMeetingRoom().getColor());
-        holder.mText.setText(meeting.getSubject());
+        holder.mText.setText(String.format("%s - %s - %s", meeting.getSubject(), new SimpleDateFormat("HH:mm").format(meeting.getTime()), meeting.getMeetingRoom().getName()));
 
         StringBuilder participants = new StringBuilder();
         List<Participant> participantsList = meeting.getParticipants();
@@ -72,14 +74,14 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
         // Action to update the meeting
         holder.itemView.setOnClickListener(v -> {
             mListMeetingListener.onClick(meeting, holder.getAdapterPosition()); // CALLBACK
+            // Method onClick come from ListMeetingActivity
         });
 
         // Action to delete a meeting
         holder.mDeleteButton.setOnClickListener(v -> {
             mListMeetingListener.onDelete(meeting, holder.getAdapterPosition()); // CALLBACK
+            // Method onDelete come from ListMeetingActivity
         });
-
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -97,6 +99,4 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
             ButterKnife.bind(this, view);
         }
     }
-
-
 }

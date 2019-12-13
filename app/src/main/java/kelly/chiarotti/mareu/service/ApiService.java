@@ -1,5 +1,7 @@
 package kelly.chiarotti.mareu.service;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import kelly.chiarotti.mareu.model.Meeting;
@@ -14,7 +16,7 @@ public interface ApiService {
     public List<MeetingRoom> getMeetingRooms();
 
     public void addMeeting(Meeting meeting);
-    public void deleteMeeting(Meeting meeting);
+    public void deleteMeeting(@Nullable Meeting meeting, @Nullable Integer position);
     public List<Meeting> getMeetings();
     public List<Meeting> generateMeetings();
 }

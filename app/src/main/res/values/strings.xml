@@ -7,4 +7,5 @@
     <string name="list_add_button">list_add_button</string>
     <string name="save_button">Enregistrer</string>
     <string name="form_time">Heures</string>
+    <string name="btn_next">SUIVANT</string>
 </resources>
