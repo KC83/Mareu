@@ -2,6 +2,7 @@ package kelly.chiarotti.mareu.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Meeting {
     private Integer mId;
@@ -120,5 +121,13 @@ public class Meeting {
      */
     public void setParticipants(List<Participant> participants) {
         mParticipants = participants;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Meeting meeting = (Meeting) o;
+        return Objects.equals(mId, meeting.mId);
     }
 }

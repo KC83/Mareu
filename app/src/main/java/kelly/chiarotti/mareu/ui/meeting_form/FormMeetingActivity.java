@@ -43,7 +43,7 @@ public class FormMeetingActivity extends AppCompatActivity implements Informatio
 
         mInformationFragment = InformationFragment.newInstance(meeting, meetingPosition);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container_information, mInformationFragment)
+                .replace(R.id.container, mInformationFragment)
                 .commit();
 
     }
@@ -53,15 +53,16 @@ public class FormMeetingActivity extends AppCompatActivity implements Informatio
         mMeetingRoomFragment = MeetingRoomFragment.newInstance(meeting, position);
         getSupportFragmentManager().beginTransaction()
                 .remove(mInformationFragment)
-                .replace(R.id.container_meeting_room, mMeetingRoomFragment)
+                .replace(R.id.container, mMeetingRoomFragment)
                 .commit();
     }
 
     @Override
     public void onBackMeetingRoomButton(Meeting meeting, int position) {
+        mInformationFragment = InformationFragment.newInstance(meeting, position);
         getSupportFragmentManager().beginTransaction()
                 .remove(mMeetingRoomFragment)
-                .replace(R.id.container_information, mInformationFragment)
+                .replace(R.id.container, mInformationFragment)
                 .commit();
     }
 
@@ -70,15 +71,16 @@ public class FormMeetingActivity extends AppCompatActivity implements Informatio
         mParticipantFragment = ParticipantFragment.newInstance(meeting, position);
         getSupportFragmentManager().beginTransaction()
                 .remove(mMeetingRoomFragment)
-                .replace(R.id.container_participant, mParticipantFragment)
+                .replace(R.id.container, mParticipantFragment)
                 .commit();
     }
 
     @Override
     public void onBackParticipantButton(Meeting meeting, int position) {
+        mMeetingRoomFragment = MeetingRoomFragment.newInstance(meeting, position);
         getSupportFragmentManager().beginTransaction()
                 .remove(mParticipantFragment)
-                .replace(R.id.container_meeting_room, mMeetingRoomFragment)
+                .replace(R.id.container, mMeetingRoomFragment)
                 .commit();
     }
 

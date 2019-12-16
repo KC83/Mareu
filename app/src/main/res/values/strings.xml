@@ -8,4 +8,8 @@
     <string name="save_button">Enregistrer</string>
     <string name="form_time">Heures</string>
     <string name="btn_next">SUIVANT</string>
+    <string name="btn_back">PRECEDENT</string>
+    <string name="text_meeting_room">Salle de réunion :</string>
+    <string name="textview_participant">Participant(s) :</string>
+    <string name="autocomplete_participant">Nom, adresse email</string>
 </resources>

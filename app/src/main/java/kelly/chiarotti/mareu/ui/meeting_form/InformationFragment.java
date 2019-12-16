@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,10 +24,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import kelly.chiarotti.mareu.R;
 import kelly.chiarotti.mareu.di.DI;
 import kelly.chiarotti.mareu.model.Meeting;
+import kelly.chiarotti.mareu.model.MeetingRoom;
+import kelly.chiarotti.mareu.model.Participant;
 import kelly.chiarotti.mareu.service.ApiService;
 import kelly.chiarotti.mareu.service.Constants;
 
@@ -35,6 +39,8 @@ public class InformationFragment extends Fragment {
     private InformationFragmentListener mListener;
     private Integer mMeetingPosition;
     private Integer mId;
+    private MeetingRoom mMeetingRoom = null;
+    private List<Participant> mParticipantList = null;
 
     static InformationFragment newInstance(Meeting meeting, int position) {
         InformationFragment fragment = new InformationFragment();
@@ -60,7 +66,7 @@ public class InformationFragment extends Fragment {
         EditText time = view.findViewById(R.id.item_form_time);
         time.setInputType(InputType.TYPE_NULL);
         EditText subject = view.findViewById(R.id.item_form_subject);
-        Button button = view.findViewById(R.id.btn_next_fragment_information);
+        Button buttonNext = view.findViewById(R.id.btn_next);
 
         if (getArguments() != null) {
             Context context = getContext();
@@ -70,11 +76,14 @@ public class InformationFragment extends Fragment {
             if (meeting != null) {
                 mMeetingPosition = getArguments().getInt(Constants.EXTRA_MEETING_POSITION);
                 mId = meeting.getId();
+                mMeetingRoom = meeting.getMeetingRoom();
+                mParticipantList = meeting.getParticipants();
 
                 date.setText(new SimpleDateFormat("dd/MM/yyyy").format(meeting.getDate()));
                 time.setText(new SimpleDateFormat("HH:mm").format(meeting.getTime()));
                 subject.setText(meeting.getSubject());
             } else {
+                mMeetingPosition = apiService.getMeetings().size();
                 mId = apiService.getMeetings().size()+1;
             }
 
@@ -101,7 +110,7 @@ public class InformationFragment extends Fragment {
                 });
             }
 
-            button.setOnClickListener(v -> {
+            buttonNext.setOnClickListener(v -> {
                 Date dt = null;
                 Date tm = null;
 
@@ -112,8 +121,12 @@ public class InformationFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                Meeting newMeeting = new Meeting(mId, dt, tm, subject.getText().toString(), null, null);
-                mListener.onNextInformationButton(newMeeting, mMeetingPosition);
+                if (dt != null && tm != null && subject.getText().toString().length() > 0) {
+                    Meeting newMeeting = new Meeting(mId, dt, tm, subject.getText().toString(), mMeetingRoom, mParticipantList);
+                    mListener.onNextInformationButton(newMeeting, mMeetingPosition);
+                } else {
+                    Toast.makeText(getContext(), "Toutes les informations ne sont pas renseignées", Toast.LENGTH_SHORT).show();
+                }
             });
         }
 

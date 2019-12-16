@@ -1,5 +1,9 @@
 package kelly.chiarotti.mareu.model;
 
+import androidx.annotation.NonNull;
+
+import java.util.Objects;
+
 public class Participant {
     private Integer mId;
     private String mEmail;
@@ -63,4 +67,20 @@ public class Participant {
     public void setNom(String nom) {
         mNom = nom;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Participant participant = (Participant) o;
+        return Objects.equals(mId, participant.mId);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return mNom;
+    }
+
+
 }

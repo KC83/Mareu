@@ -1,5 +1,7 @@
 package kelly.chiarotti.mareu.model;
 
+import java.util.Objects;
+
 public class MeetingRoom {
     private Integer mId;
     private String mName;
@@ -62,5 +64,13 @@ public class MeetingRoom {
      */
     public void setColor(Integer color) {
         mColor = color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MeetingRoom meetingRoom = (MeetingRoom) o;
+        return Objects.equals(mId, meetingRoom.mId);
     }
 }
