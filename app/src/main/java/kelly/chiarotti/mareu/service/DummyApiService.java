@@ -23,7 +23,13 @@ public class DummyApiService implements ApiService {
                 new Participant(2, "marc@gmail.com","Marc"),
                 new Participant(3, "laura@gmail.com","Laura"),
                 new Participant(4, "john@gmail.com","John"),
-                new Participant(5, "lola@gmail.com","Lola")
+                new Participant(5, "lola@gmail.com","Lola"),
+                new Participant(6, "a@gmail.com","Adam"),
+                new Participant(7, "b@gmail.com","Benoit"),
+                new Participant(8, "c@gmail.com","Carole"),
+                new Participant(9, "d@gmail.com","Denis"),
+                new Participant(10, "e@gmail.com","Ethan"),
+                new Participant(11, "f@gmail.com","Fanny")
         );
         return new ArrayList<>(dummyParticipants);
     }
@@ -61,12 +67,19 @@ public class DummyApiService implements ApiService {
     }
 
     @Override
-    public void deleteMeeting(Meeting meeting, Integer position)  {
-        if (meeting != null) {
-            mMeetings.remove(meeting);
-        } else if (position != null) {
-            mMeetings.remove(mMeetings.get(position));
-        }
+    public void updateMeeting(Meeting meeting, int position) {
+        Meeting updateMeeting = mMeetings.get(position);
+
+        updateMeeting.setDate(meeting.getDate());
+        updateMeeting.setTime(meeting.getTime());
+        updateMeeting.setSubject(meeting.getSubject());
+        updateMeeting.setMeetingRoom(meeting.getMeetingRoom());
+        updateMeeting.setParticipants(meeting.getParticipants());
+    }
+
+    @Override
+    public void deleteMeeting(Meeting meeting)  {
+        mMeetings.remove(meeting);
     }
 
     @Override
@@ -81,5 +94,24 @@ public class DummyApiService implements ApiService {
                 new Meeting(2, new Date(), new Date(), "Sujet 1", getMeetingRooms().get(2), getParticipants())
         );
         return new ArrayList<>(dummyMeetings);
+    }
+
+    @Override
+    public List<Meeting> getMeetingsByMeetingRoom(List<MeetingRoom> meetingRooms) {
+        List<Meeting> meetings = new ArrayList<>();
+
+        if (meetingRooms.size() > 0) {
+            for (Meeting meeting : mMeetings) {
+                for (MeetingRoom meetingRoom : meetingRooms) {
+                    if (meeting.getMeetingRoom().equals(meetingRoom)) {
+                        meetings.add(meeting);
+                    }
+                }
+            }
+        } else {
+            meetings = mMeetings;
+        }
+
+        return meetings;
     }
 }

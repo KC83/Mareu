@@ -40,7 +40,7 @@ public class InformationFragment extends Fragment {
     private Integer mMeetingPosition;
     private Integer mId;
     private MeetingRoom mMeetingRoom = null;
-    private List<Participant> mParticipantList = null;
+    private List<Participant> mParticipants = null;
 
     static InformationFragment newInstance(Meeting meeting, int position) {
         InformationFragment fragment = new InformationFragment();
@@ -77,7 +77,7 @@ public class InformationFragment extends Fragment {
                 mMeetingPosition = getArguments().getInt(Constants.EXTRA_MEETING_POSITION);
                 mId = meeting.getId();
                 mMeetingRoom = meeting.getMeetingRoom();
-                mParticipantList = meeting.getParticipants();
+                mParticipants = meeting.getParticipants();
 
                 date.setText(new SimpleDateFormat("dd/MM/yyyy").format(meeting.getDate()));
                 time.setText(new SimpleDateFormat("HH:mm").format(meeting.getTime()));
@@ -122,7 +122,7 @@ public class InformationFragment extends Fragment {
                 }
 
                 if (dt != null && tm != null && subject.getText().toString().length() > 0) {
-                    Meeting newMeeting = new Meeting(mId, dt, tm, subject.getText().toString(), mMeetingRoom, mParticipantList);
+                    Meeting newMeeting = new Meeting(mId, dt, tm, subject.getText().toString(), mMeetingRoom, mParticipants);
                     mListener.onNextInformationButton(newMeeting, mMeetingPosition);
                 } else {
                     Toast.makeText(getContext(), "Toutes les informations ne sont pas renseignées", Toast.LENGTH_SHORT).show();

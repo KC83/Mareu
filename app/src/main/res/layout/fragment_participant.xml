@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
     <AutoCompleteTextView
         android:id="@+id/autocomplete_participant"
         android:layout_width="match_parent"
@@ -27,14 +28,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textview_meeting_room"
         tools:ignore="LabelFor" />
 
-    <TextView
-        android:id="@+id/text_view_participant"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_list_participants"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="0dp"
+        app:layoutManager="LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/autocomplete_participant"
-        tools:layout_editor_absoluteX="25dp" />
-
+        app:layout_constraintBottom_toTopOf="@+id/btn_form_save"
+        tools:context=".ui.meeting_form.FormMeetingActivity"
+        tools:listitem="@layout/list_participant" />
 
     <Button
         android:id="@+id/btn_back"
@@ -47,6 +49,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
+
     <Button
         android:id="@+id/btn_form_save"
         style="?android:attr/borderlessButtonStyle"

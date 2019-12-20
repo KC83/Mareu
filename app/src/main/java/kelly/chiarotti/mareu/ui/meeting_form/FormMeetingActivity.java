@@ -87,11 +87,16 @@ public class FormMeetingActivity extends AppCompatActivity implements Informatio
     @Override
     public void onSaveMeeting(Meeting meeting, int position) {
         ApiService apiService = DI.getApiService();
-        apiService.addMeeting(meeting);
+
+        if (apiService.getMeetings().size() > position) {
+            apiService.updateMeeting(meeting, position);
+        } else {
+            apiService.addMeeting(meeting);
+        }
+
         Toast.makeText(this, "Réunion enregistrée !", Toast.LENGTH_SHORT).show();
 
         Intent listMeetingActivityIntent = new Intent();
-        listMeetingActivityIntent.putExtra(Constants.EXTRA_MEETING_POSITION,position);
         setResult(Activity.RESULT_OK,listMeetingActivityIntent);
         finish();
     }

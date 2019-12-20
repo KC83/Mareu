@@ -31,10 +31,11 @@ public class MeetingRoomFragment extends Fragment {
 
     private ApiService mApiService;
     private MeetingRoomFragmentListener mListener;
+
     private Meeting mMeeting;
     private Integer mMeetingPosition;
     private MeetingRoom mMeetingRoom = null;
-    private List<Participant> mParticipantList = null;
+    private List<Participant> mParticipants = null;
 
     static MeetingRoomFragment newInstance(Meeting meeting, int position) {
         MeetingRoomFragment fragment = new MeetingRoomFragment();
@@ -68,7 +69,7 @@ public class MeetingRoomFragment extends Fragment {
                 mMeeting = meeting;
                 mMeetingPosition = getArguments().getInt(Constants.EXTRA_MEETING_POSITION);
                 mMeetingRoom = mMeeting.getMeetingRoom();
-                mParticipantList = mMeeting.getParticipants();
+                mParticipants = mMeeting.getParticipants();
             }
         }
 
@@ -79,7 +80,7 @@ public class MeetingRoomFragment extends Fragment {
                 mMeetingRoom = mApiService.getMeetingRooms().get(radioGroup.getCheckedRadioButtonId());
             }
 
-            Meeting newMeeting = new Meeting(mMeeting.getId(), mMeeting.getDate(), mMeeting.getTime(), mMeeting.getSubject(), mMeetingRoom, mParticipantList);
+            Meeting newMeeting = new Meeting(mMeeting.getId(), mMeeting.getDate(), mMeeting.getTime(), mMeeting.getSubject(), mMeetingRoom, mParticipants);
             mListener.onBackMeetingRoomButton(newMeeting, mMeetingPosition);
         });
 
@@ -87,7 +88,7 @@ public class MeetingRoomFragment extends Fragment {
             if (radioGroup.getCheckedRadioButtonId() > 0) {
                 mMeetingRoom = mApiService.getMeetingRooms().get(radioGroup.getCheckedRadioButtonId());
 
-                Meeting newMeeting = new Meeting(mMeeting.getId(), mMeeting.getDate(), mMeeting.getTime(), mMeeting.getSubject(), mMeetingRoom, mParticipantList);
+                Meeting newMeeting = new Meeting(mMeeting.getId(), mMeeting.getDate(), mMeeting.getTime(), mMeeting.getSubject(), mMeetingRoom, mParticipants);
                 mListener.onNextMeetingRoomButton(newMeeting, mMeetingPosition);
             } else {
                 Toast.makeText(getContext(), "Aucune salle de réunion n'est sélectionnée", Toast.LENGTH_SHORT).show();

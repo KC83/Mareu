@@ -5,14 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,7 +31,11 @@ public class ParticipantFragment extends Fragment {
     private ParticipantFragmentListener mListener;
     private Meeting mMeeting;
     private Integer mMeetingPosition;
-    private List<Participant> mParticipantList;
+    private List<Participant> mParticipants;
+
+    private ListParticipantAdapter mAdapter;
+    private ArrayAdapter<Participant> mArrayAdapter;
+    private ArrayList<Participant> mParticipantArrayList;
 
     static ParticipantFragment newInstance(Meeting meeting, int position) {
         ParticipantFragment fragment = new ParticipantFragment();
@@ -55,47 +59,79 @@ public class ParticipantFragment extends Fragment {
         Context context = getContext();
 
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autocomplete_participant);
-        TextView textView = view.findViewById(R.id.text_view_participant);
+        RecyclerView recyclerView = view.findViewById(R.id.item_list_participants);
         Button buttonBack = view.findViewById(R.id.btn_back);
+        Button buttonSave = view.findViewById(R.id.btn_form_save);
 
+        mParticipants = new ArrayList<>();
         if (getArguments() != null) {
             Meeting meeting = new Gson().fromJson(getArguments().getString(Constants.EXTRA_MEETING), new TypeToken<Meeting>() {}.getType());
 
             if (meeting != null) {
                 mMeeting = meeting;
                 mMeetingPosition = getArguments().getInt(Constants.EXTRA_MEETING_POSITION);
+
+                if (meeting.getParticipants() != null) {
+                    mParticipants = meeting.getParticipants();
+                }
             }
         }
-
         if (context != null) {
-            ArrayList<Participant> participants = new ArrayList<>(apiService.getParticipants());
-            ArrayAdapter<Participant> adapter = new ArrayAdapter<Participant>(context, android.R.layout.simple_dropdown_item_1line, participants);
-            autoCompleteTextView.setAdapter(adapter);
+            mParticipantArrayList = new ArrayList<>(apiService.getParticipants());
+            if (mParticipants.size() > 0) {
+                for (Participant participant : mParticipants) {
+                    mParticipantArrayList.remove(participant);
+                }
+            }
+
+            mArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, mParticipantArrayList);
+            autoCompleteTextView.setAdapter(mArrayAdapter);
         }
 
-        textView.setText("TEST TEXTE");
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new ListParticipantAdapter(mParticipants, (participant, position) -> {
+            mParticipants.remove(participant);
+            mAdapter.notifyItemRemoved(position); // RELOAD THE LIST
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<Participant> participants = new ArrayList<>(apiService.getParticipants());
+            if (context != null) {
+                // Update list of participants in autocomplete (add deleted participant in the autocomplete list)
+                mParticipantArrayList.add(participant);
+                mArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, mParticipantArrayList);
+                autoCompleteTextView.setAdapter(mArrayAdapter);
+            }
+        });
+        recyclerView.setAdapter(mAdapter);
 
-                Participant selected = (Participant) parent.getAdapter().getItem(position);
-                for (Participant participant : participants) {
-                    if (participant.equals(selected)) {
+        autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
+            Participant selected = (Participant) parent.getAdapter().getItem(position);
+            for (Participant participant : mParticipantArrayList) {
+                if (participant.equals(selected)) {
+                    Participant selectedParticipant = new Participant(participant.getId(), participant.getEmail(), participant.getNom());
+                    mParticipants.add(selectedParticipant);
 
-                        Participant selectedParticipant = new Participant(participant.getId(), participant.getEmail(), participant.getNom());
-                        //mParticipantList.add(selectedParticipant);
-                        textView.setText(String.format("%s\n%s (%s)", textView.getText(), participant.getNom(), participant.getEmail()));
-                        break;
+                    mAdapter.notifyDataSetChanged();
+                    autoCompleteTextView.setText("");
+
+                    if (context != null) {
+                        // Update list of participants in autocomplete (remove selected participant of autocomplete list)
+                        mParticipantArrayList.remove(participant);
+                        mArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, mParticipantArrayList);
+                        autoCompleteTextView.setAdapter(mArrayAdapter);
                     }
+
+                    break;
                 }
             }
         });
 
         buttonBack.setOnClickListener(v -> {
-            Meeting newMeeting = new Meeting(mMeeting.getId(), mMeeting.getDate(), mMeeting.getTime(), mMeeting.getSubject(), mMeeting.getMeetingRoom(), null);
+            Meeting newMeeting = new Meeting(mMeeting.getId(), mMeeting.getDate(), mMeeting.getTime(), mMeeting.getSubject(), mMeeting.getMeetingRoom(), mParticipants);
             mListener.onBackParticipantButton(newMeeting, mMeetingPosition);
+        });
+
+        buttonSave.setOnClickListener(v -> {
+            Meeting newMeeting = new Meeting(mMeeting.getId(), mMeeting.getDate(), mMeeting.getTime(), mMeeting.getSubject(), mMeeting.getMeetingRoom(), mParticipants);
+            mListener.onSaveMeeting(newMeeting,mMeetingPosition);
         });
 
         return view;
