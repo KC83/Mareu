@@ -1,6 +1,5 @@
 package kelly.chiarotti.mareu.ui.meeting_form;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -51,10 +51,9 @@ public class MeetingRoomFragment extends Fragment {
         void onNextMeetingRoomButton(Meeting meeting, int position);
     }
 
-    @SuppressLint("ResourceType")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_meeting_room, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mApiService = DI.getApiService();
 
@@ -76,7 +75,7 @@ public class MeetingRoomFragment extends Fragment {
         createRadioButton(radioGroup, mMeetingRoom);
 
         buttonBack.setOnClickListener(v -> {
-            if (radioGroup.getCheckedRadioButtonId() > 0) {
+            if (radioGroup.getCheckedRadioButtonId() != -1) {
                 mMeetingRoom = mApiService.getMeetingRooms().get(radioGroup.getCheckedRadioButtonId());
             }
 
@@ -85,7 +84,7 @@ public class MeetingRoomFragment extends Fragment {
         });
 
         buttonNext.setOnClickListener(v -> {
-            if (radioGroup.getCheckedRadioButtonId() > 0) {
+            if (radioGroup.getCheckedRadioButtonId() != -1) {
                 mMeetingRoom = mApiService.getMeetingRooms().get(radioGroup.getCheckedRadioButtonId());
 
                 Meeting newMeeting = new Meeting(mMeeting.getId(), mMeeting.getDate(), mMeeting.getTime(), mMeeting.getSubject(), mMeetingRoom, mParticipants);
@@ -94,14 +93,16 @@ public class MeetingRoomFragment extends Fragment {
                 Toast.makeText(getContext(), "Aucune salle de réunion n'est sélectionnée", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        return view;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_meeting_room, container, false);
     }
 
     private void createRadioButton(RadioGroup radioGroup, MeetingRoom meetingRoom) {
         Context context = getContext();
-        ApiService apiService = DI.getApiService();
-        List<MeetingRoom> meetingRoomList = apiService.getMeetingRooms();
+        List<MeetingRoom> meetingRoomList = mApiService.getMeetingRooms();
 
         RadioButton[] radioButton = new RadioButton[meetingRoomList.size()];
 

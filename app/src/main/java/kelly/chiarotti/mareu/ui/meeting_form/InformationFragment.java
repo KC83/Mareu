@@ -56,10 +56,9 @@ public class InformationFragment extends Fragment {
     }
 
     @SuppressLint("SimpleDateFormat")
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_information, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         EditText date = view.findViewById(R.id.item_form_date);
         date.setInputType(InputType.TYPE_NULL);
@@ -129,8 +128,11 @@ public class InformationFragment extends Fragment {
                 }
             });
         }
+    }
 
-        return view;
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_information, container, false);
     }
 
     @Override
