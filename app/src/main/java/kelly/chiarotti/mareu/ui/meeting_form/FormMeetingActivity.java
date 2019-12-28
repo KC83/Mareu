@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -21,6 +22,8 @@ public class FormMeetingActivity extends AppCompatActivity implements Informatio
     InformationFragment mInformationFragment;
     MeetingRoomFragment mMeetingRoomFragment;
     ParticipantFragment mParticipantFragment;
+
+    String mFragment = "InformationFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,45 +44,78 @@ public class FormMeetingActivity extends AppCompatActivity implements Informatio
             meetingPosition = 0;
         }
 
-        mInformationFragment = InformationFragment.newInstance(meeting, meetingPosition);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, mInformationFragment)
-                .commit();
+        if (savedInstanceState != null) {
+            mFragment = savedInstanceState.getString(Constants.EXTRA_FORM_MEETING_FRAGMENT);
+        }
 
+        if (mFragment != null) {
+            switch (mFragment) {
+                case Constants.NAME_INFORMATION_FRAGMENT:
+                    mInformationFragment = InformationFragment.newInstance(meeting, meetingPosition);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, mInformationFragment)
+                            .commit();
+                    break;
+                case Constants.NAME_MEETING_ROOM_FRAGMENT:
+                    mMeetingRoomFragment = MeetingRoomFragment.newInstance(meeting, meetingPosition);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, mMeetingRoomFragment)
+                            .commit();
+                    break;
+                case Constants.NAME_PARTICIPANT_FRAGMENT:
+                    mParticipantFragment = ParticipantFragment.newInstance(meeting, meetingPosition);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, mParticipantFragment)
+                            .commit();
+                    break;
+            }
+        }
+    }
+
+
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(Constants.EXTRA_FORM_MEETING_FRAGMENT, mFragment);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onNextInformationButton(Meeting meeting, int position) {
+        mFragment = Constants.NAME_MEETING_ROOM_FRAGMENT;
+
         mMeetingRoomFragment = MeetingRoomFragment.newInstance(meeting, position);
         getSupportFragmentManager().beginTransaction()
-                .remove(mInformationFragment)
                 .replace(R.id.container, mMeetingRoomFragment)
                 .commit();
     }
 
     @Override
     public void onBackMeetingRoomButton(Meeting meeting, int position) {
+        mFragment = Constants.NAME_INFORMATION_FRAGMENT;
+
         mInformationFragment = InformationFragment.newInstance(meeting, position);
         getSupportFragmentManager().beginTransaction()
-                .remove(mMeetingRoomFragment)
                 .replace(R.id.container, mInformationFragment)
                 .commit();
     }
 
     @Override
     public void onNextMeetingRoomButton(Meeting meeting, int position) {
+        mFragment = Constants.NAME_PARTICIPANT_FRAGMENT;
+
         mParticipantFragment = ParticipantFragment.newInstance(meeting, position);
         getSupportFragmentManager().beginTransaction()
-                .remove(mMeetingRoomFragment)
                 .replace(R.id.container, mParticipantFragment)
                 .commit();
     }
 
     @Override
     public void onBackParticipantButton(Meeting meeting, int position) {
+        mFragment = Constants.NAME_MEETING_ROOM_FRAGMENT;
+
         mMeetingRoomFragment = MeetingRoomFragment.newInstance(meeting, position);
         getSupportFragmentManager().beginTransaction()
-                .remove(mParticipantFragment)
                 .replace(R.id.container, mMeetingRoomFragment)
                 .commit();
     }

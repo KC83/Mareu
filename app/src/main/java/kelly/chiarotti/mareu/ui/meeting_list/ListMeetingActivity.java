@@ -1,5 +1,6 @@
 package kelly.chiarotti.mareu.ui.meeting_list;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -110,7 +111,21 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DatePicker picker = new DatePicker(this);
         builder.setView(picker);
-        builder.setPositiveButton("Ok", null);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @SuppressLint("SimpleDateFormat")
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int month = picker.getMonth() + 1;
+                String date = picker.getDayOfMonth()+"/"+month+"/"+picker.getYear();
+                
+                List<Meeting> meetings = mApiService.getMeetingsByDate(date);
+                mAdapter = new ListMeetingAdapter(meetings, ListMeetingActivity.this);
+
+                final RecyclerView mRecyclerView = findViewById(R.id.activity_list_meeting);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(ListMeetingActivity.this));
+                mRecyclerView.setAdapter(mAdapter);
+            }
+        });
         builder.setNegativeButton("Annuler", null);
 
         builder.create();
@@ -147,6 +162,7 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
                 mRecyclerView.setAdapter(mAdapter);
             }
         });
+        builder.setNegativeButton("FERMER", null);
 
         builder.create();
         builder.show();

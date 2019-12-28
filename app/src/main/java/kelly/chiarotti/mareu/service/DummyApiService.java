@@ -1,7 +1,9 @@
 package kelly.chiarotti.mareu.service;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -110,6 +112,19 @@ public class DummyApiService implements ApiService {
             }
         } else {
             meetings = mMeetings;
+        }
+
+        return meetings;
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    @Override
+    public List<Meeting> getMeetingsByDate(String date) {
+        List<Meeting> meetings = new ArrayList<>();
+        for (Meeting meeting : mMeetings) {
+            if (date.equals(new SimpleDateFormat("dd/MM/yyyy").format(meeting.getDate()))) {
+                meetings.add(meeting);
+            }
         }
 
         return meetings;

@@ -20,4 +20,5 @@ public interface ApiService {
     public List<Meeting> generateMeetings();
 
     public List<Meeting> getMeetingsByMeetingRoom(List<MeetingRoom> meetingRooms);
+    public List<Meeting> getMeetingsByDate(String date);
 }
