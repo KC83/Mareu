@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_people_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.meeting_form.FormMeetingActivity"></activity>
+        <activity android:name=".ui.meeting_form.FormMeetingActivity" android:configChanges="keyboardHidden|orientation|screenSize"></activity>
         <activity android:name=".ui.meeting_list.ListMeetingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
