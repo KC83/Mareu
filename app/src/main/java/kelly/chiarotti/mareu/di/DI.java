@@ -15,6 +15,7 @@ public class DI {
     }
 
     public static ApiService getNewInstanceApiService() {
-        return new DummyApiService();
+        service = new DummyApiService();
+        return service;
     }
 }

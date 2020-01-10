@@ -33,7 +33,7 @@ import kelly.chiarotti.mareu.ui.meeting_form.FormMeetingActivity;
 
 public class ListMeetingActivity extends AppCompatActivity implements View.OnClickListener, ListMeetingAdapter.ListMeetingListener {
 
-    private final ApiService mApiService = DI.getApiService();
+    private final ApiService mApiService = DI.getNewInstanceApiService();
     private ListMeetingAdapter mAdapter;
     private List<MeetingRoom> mMeetingRooms;
 

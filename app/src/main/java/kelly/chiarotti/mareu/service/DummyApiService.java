@@ -6,7 +6,6 @@ import android.graphics.Color;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import kelly.chiarotti.mareu.model.Meeting;
@@ -91,11 +90,7 @@ public class DummyApiService implements ApiService {
 
     @Override
     public List<Meeting> generateMeetings() {
-        List<Meeting> dummyMeetings  = Arrays.asList(
-                new Meeting(1, new Date(), new Date(), "Sujet", getMeetingRooms().get(0), getParticipants()),
-                new Meeting(2, new Date(), new Date(), "Sujet 1", getMeetingRooms().get(2), getParticipants())
-        );
-        return new ArrayList<>(dummyMeetings);
+        return new ArrayList<>();
     }
 
     @Override
