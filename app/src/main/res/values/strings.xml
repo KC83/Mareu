@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Ma réu</string>
+    <string name="list_color">list_color</string>
+    <string name="list_delete_button">list_delete_button</string>
+    <string name="form_date">Date</string>
+    <string name="form_subject">Sujet</string>
+    <string name="list_add_button">list_add_button</string>
+    <string name="save_button">Enregistrer</string>
+    <string name="form_time">Heures</string>
+    <string name="btn_next">SUIVANT</string>
+    <string name="btn_back">PRECEDENT</string>
+    <string name="text_meeting_room">Salle de réunion :</string>
+    <string name="textview_participant">Participant(s) :</string>
+    <string name="autocomplete_participant">Nom</string>
+    <string name="filter_meeting_room">Filtrer par salle</string>
+    <string name="filter_date">Filtrer par date</string>
 </resources>

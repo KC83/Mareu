@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/filter_date"
+        android:title="@string/filter_date"
+        app:showAsAction="never"/>
+    <item android:id="@+id/filter_meeting_room"
+        android:title="@string/filter_meeting_room"
+        app:showAsAction="never"/>
+</menu>
