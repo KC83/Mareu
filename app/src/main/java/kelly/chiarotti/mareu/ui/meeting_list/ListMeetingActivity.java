@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import kelly.chiarotti.mareu.R;
@@ -36,6 +38,7 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
     private final ApiService mApiService = DI.getNewInstanceApiService();
     private ListMeetingAdapter mAdapter;
     private List<MeetingRoom> mMeetingRooms;
+    private Calendar mCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
         List<Meeting> meetings = mApiService.getMeetings();
         mAdapter = new ListMeetingAdapter(meetings, this);
         mMeetingRooms = new ArrayList<>();
+        mCalendar.setTime(new Date());
 
         final RecyclerView mRecyclerView = findViewById(R.id.activity_list_meeting);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -110,16 +114,34 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
     public void filterMeetingByDate() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DatePicker picker = new DatePicker(this);
+
+        picker.updateDate(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+
         builder.setView(picker);
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @SuppressLint("SimpleDateFormat")
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int month = picker.getMonth() + 1;
-                String date = picker.getDayOfMonth()+"/"+month+"/"+picker.getYear();
-                
+                String date = "";
+
+                if (month < 10) {
+                    if (picker.getDayOfMonth() < 10) {
+                        date = "0"+picker.getDayOfMonth()+"/0"+month+"/"+picker.getYear();
+                    } else {
+                        date = picker.getDayOfMonth()+"/0"+month+"/"+picker.getYear();
+                    }
+                } else {
+                    if (picker.getDayOfMonth() < 10) {
+                        date = "0"+picker.getDayOfMonth()+"/"+month+"/"+picker.getYear();
+                    } else {
+                        date = picker.getDayOfMonth()+"/"+month+"/"+picker.getYear();
+                    }
+                }
+
                 List<Meeting> meetings = mApiService.getMeetingsByDate(date);
                 mAdapter = new ListMeetingAdapter(meetings, ListMeetingActivity.this);
+                mCalendar.set(picker.getYear(), picker.getMonth(), picker.getDayOfMonth());
 
                 final RecyclerView mRecyclerView = findViewById(R.id.activity_list_meeting);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(ListMeetingActivity.this));
