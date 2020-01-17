@@ -51,21 +51,18 @@ public class ApiServiceTest {
         Meeting meeting = new Meeting(1, new Date(), new Date(), "First meeting", mApiService.getMeetingRooms().get(0), mApiService.getParticipants());
         mApiService.addMeeting(meeting);
         assertTrue(mApiService.getMeetings().contains(meeting));
-    }
-
-    // Check if the list of meetings is not empty
-    @Test
-    public void getMeeting_isNotEmpty() {
-        assertNotNull(mApiService.getMeetings());
+        assertEquals(1, mApiService.getMeetings().size());
     }
 
     // Update a meeting
     @Test
     public void updateMeeting() {
-        mApiService.generateMeetings(); // Init empty list of meetings
         mApiService.addMeeting(new Meeting(1, new Date(), new Date(), "First meeting", mApiService.getMeetingRooms().get(0), mApiService.getParticipants()));
 
         Meeting meeting = mApiService.getMeetings().get(0);
+        assertEquals(mApiService.getMeetings().get(0).getSubject(), "First meeting");
+
+
         meeting.setSubject("First meeting has been updated");
         // TODO : Pour chaque attributs ?
         mApiService.updateMeeting(meeting, 0);
@@ -76,49 +73,38 @@ public class ApiServiceTest {
     // Delete a meeting
     @Test
     public void deleteMeeting() {
-        mApiService.generateMeetings(); // Init empty list of meetings
         mApiService.addMeeting(new Meeting(1, new Date(), new Date(), "First meeting", mApiService.getMeetingRooms().get(0), mApiService.getParticipants()));
 
         Meeting meeting = mApiService.getMeetings().get(0);
         mApiService.deleteMeeting(meeting);
         assertFalse(mApiService.getMeetings().contains(meeting));
+        assertEquals(0, mApiService.getMeetings().size());
     }
 
     // Filter by date
     @Test
-    public void filterByDate() {
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("dd/MM/yyyy").parse("15/01/2020");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void filterByDate() throws ParseException {
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse("15/01/2020");
 
         mApiService.addMeeting(new Meeting(1, date, new Date(), "Meeting n°1", mApiService.getMeetingRooms().get(0), mApiService.getParticipants()));
         mApiService.addMeeting(new Meeting(2, date, new Date(), "Meeting n°2", mApiService.getMeetingRooms().get(1), mApiService.getParticipants()));
 
-        try {
-            date = new SimpleDateFormat("dd/MM/yyyy").parse("25/02/2020");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        mApiService.addMeeting(new Meeting(2, date, new Date(), "Meeting n°2", mApiService.getMeetingRooms().get(1), mApiService.getParticipants()));
+        date = new SimpleDateFormat("dd/MM/yyyy").parse("25/02/2020");
+        mApiService.addMeeting(new Meeting(3, date, new Date(), "Meeting n°3", mApiService.getMeetingRooms().get(1), mApiService.getParticipants()));
 
         List<Meeting> meetings = mApiService.getMeetingsByDate("15/01/2020");
         assertEquals(2, meetings.size());
-        assertEquals("15/01/2020", new SimpleDateFormat("dd/MM/yyyy").format(meetings.get(0).getDate()));
-        assertEquals("15/01/2020", new SimpleDateFormat("dd/MM/yyyy").format(meetings.get(1).getDate()));
+        assertEquals("Meeting n°1", meetings.get(0).getSubject());
+        assertEquals("Meeting n°2", meetings.get(1).getSubject());
 
         meetings = mApiService.getMeetingsByDate("25/02/2020");
         assertEquals(1, meetings.size());
-        assertEquals("25/02/2020", new SimpleDateFormat("dd/MM/yyyy").format(meetings.get(0).getDate()));
-
+        assertEquals("Meeting n°3", meetings.get(0).getSubject());
     }
 
     // Filter by meeting room
     @Test
     public void filterByMeetingRoom() {
-        mApiService.generateMeetings(); // Init empty list of meetings
         mApiService.addMeeting(new Meeting(1, new Date(), new Date(), "Meeting n°1", mApiService.getMeetingRooms().get(0), mApiService.getParticipants()));
         mApiService.addMeeting(new Meeting(2, new Date(), new Date(), "Meeting n°2", mApiService.getMeetingRooms().get(0), mApiService.getParticipants()));
 
