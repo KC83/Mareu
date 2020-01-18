@@ -45,7 +45,7 @@
         tools:ignore="Autofill,MissingConstraints" />
 
     <Button
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_next_information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"

@@ -6,12 +6,14 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import kelly.chiarotti.mareu.di.DI;
 import kelly.chiarotti.mareu.model.Meeting;
 import kelly.chiarotti.mareu.model.MeetingRoom;
+import kelly.chiarotti.mareu.model.Participant;
 import kelly.chiarotti.mareu.service.ApiService;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +29,7 @@ public class ApiServiceTest {
         mApiService = DI.getNewInstanceApiService();
     }
 
-    // Check if the list of meetings is empty
+    // Check if the list of meetings is empty when we start the app
     @Test
     public void getMeetings_isEmpty() {
         assertEquals(0, mApiService.getMeetings().size());
@@ -56,18 +58,31 @@ public class ApiServiceTest {
 
     // Update a meeting
     @Test
-    public void updateMeeting() {
+    public void updateMeeting() throws ParseException {
         mApiService.addMeeting(new Meeting(1, new Date(), new Date(), "First meeting", mApiService.getMeetingRooms().get(0), mApiService.getParticipants()));
 
         Meeting meeting = mApiService.getMeetings().get(0);
-        assertEquals(mApiService.getMeetings().get(0).getSubject(), "First meeting");
+        assertEquals("First meeting", mApiService.getMeetings().get(0).getSubject());
 
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse("20/05/2020");
+        Date time = new SimpleDateFormat("HH:mm").parse("07:50");
+        List<Participant> list = Arrays.asList(mApiService.getParticipants().get(0));
 
+        meeting.setId(2);
+        meeting.setDate(date);
+        meeting.setTime(time);
         meeting.setSubject("First meeting has been updated");
-        // TODO : Pour chaque attributs ?
+        meeting.setMeetingRoom(mApiService.getMeetingRooms().get(3));
+        meeting.setParticipants(list);
+
         mApiService.updateMeeting(meeting, 0);
 
-        assertEquals(mApiService.getMeetings().get(0).getSubject(), "First meeting has been updated");
+        assertEquals(2, mApiService.getMeetings().get(0).getId().intValue());
+        assertEquals(date, mApiService.getMeetings().get(0).getDate());
+        assertEquals(time, mApiService.getMeetings().get(0).getTime());
+        assertEquals("First meeting has been updated", mApiService.getMeetings().get(0).getSubject());
+        assertEquals(mApiService.getMeetingRooms().get(3), mApiService.getMeetings().get(0).getMeetingRoom());
+        assertEquals(list, mApiService.getMeetings().get(0).getParticipants());
     }
 
     // Delete a meeting

@@ -65,7 +65,7 @@ public class InformationFragment extends Fragment {
         EditText time = view.findViewById(R.id.item_form_time);
         time.setInputType(InputType.TYPE_NULL);
         EditText subject = view.findViewById(R.id.item_form_subject);
-        Button buttonNext = view.findViewById(R.id.btn_next);
+        Button buttonNext = view.findViewById(R.id.btn_next_information);
 
         if (getArguments() != null) {
             Context context = getContext();

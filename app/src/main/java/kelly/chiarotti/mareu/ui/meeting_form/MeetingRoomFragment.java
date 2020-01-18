@@ -58,8 +58,8 @@ public class MeetingRoomFragment extends Fragment {
         mApiService = DI.getApiService();
 
         RadioGroup radioGroup = view.findViewById(R.id.radio_group_meeting_room);
-        Button buttonBack = view.findViewById(R.id.btn_back);
-        Button buttonNext = view.findViewById(R.id.btn_next);
+        Button buttonBack = view.findViewById(R.id.btn_back_meeting_room);
+        Button buttonNext = view.findViewById(R.id.btn_next_meeting_room);
 
         if (getArguments() != null) {
             Meeting meeting = new Gson().fromJson(getArguments().getString(Constants.EXTRA_MEETING), new TypeToken<Meeting>() {}.getType());

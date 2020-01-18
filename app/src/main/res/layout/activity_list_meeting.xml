@@ -16,12 +16,12 @@
 
 
     <ImageButton
-        android:id="@+id/item_list_add_button"
+        android:id="@+id/btn_add_meeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@null"
-        android:contentDescription="@string/list_add_button"
+        android:contentDescription="@string/btn_add_meeting"
         android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

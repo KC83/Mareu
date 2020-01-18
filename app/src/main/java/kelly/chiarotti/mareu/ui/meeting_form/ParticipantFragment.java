@@ -61,7 +61,7 @@ public class ParticipantFragment extends Fragment {
 
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autocomplete_participant);
         RecyclerView recyclerView = view.findViewById(R.id.item_list_participants);
-        Button buttonBack = view.findViewById(R.id.btn_back);
+        Button buttonBack = view.findViewById(R.id.btn_back_participant);
         Button buttonSave = view.findViewById(R.id.btn_form_save);
 
         mParticipants = new ArrayList<>();
