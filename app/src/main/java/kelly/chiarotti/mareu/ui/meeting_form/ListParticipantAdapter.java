@@ -56,7 +56,7 @@ public class ListParticipantAdapter extends RecyclerView.Adapter<ListParticipant
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_list_participant)
         public TextView mParticipant;
-        @BindView(R.id.item_list_delete_button)
+        @BindView(R.id.item_list_delete_participant_button)
         public ImageView mDeleteButton;
 
         ViewHolder(View view) {

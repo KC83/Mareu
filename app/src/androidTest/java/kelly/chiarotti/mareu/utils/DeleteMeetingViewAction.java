@@ -17,13 +17,13 @@ public class DeleteMeetingViewAction implements ViewAction {
 
     @Override
     public String getDescription() {
-        return "Click on one of the delete button";
+        return "Click on specific button";
     }
 
     @Override
     public void perform(UiController uiController, View view) {
         View button = view.findViewById(R.id.item_list_delete_button);
         button.performClick();
-        System.out.println("DELETE MEETING VIEW ACTION");
+        uiController.loopMainThreadForAtLeast(1000);
     }
 }

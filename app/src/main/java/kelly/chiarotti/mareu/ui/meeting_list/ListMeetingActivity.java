@@ -39,19 +39,24 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
     private ListMeetingAdapter mAdapter;
     private List<MeetingRoom> mMeetingRooms;
     private Calendar mCalendar = Calendar.getInstance();
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_meeting);
 
-        List<Meeting> meetings = mApiService.getMeetings();
-        mAdapter = new ListMeetingAdapter(meetings, this);
         mMeetingRooms = new ArrayList<>();
         mCalendar.setTime(new Date());
-
-        final RecyclerView mRecyclerView = findViewById(R.id.activity_list_meeting);
+        mRecyclerView = findViewById(R.id.activity_list_meeting);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        List<Meeting> meetings = mApiService.getMeetings();
+        mAdapter = new ListMeetingAdapter(meetings, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -83,7 +88,7 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
 
         if (requestCode == Constants.CODE_REQUEST_FORM_MEETING) {
             if (resultCode == Activity.RESULT_OK) {
-                mAdapter.notifyDataSetChanged();
+                initRecyclerView();
             }
         }
     }

@@ -1,6 +1,5 @@
 package kelly.chiarotti.mareu;
 
-import android.app.AlertDialog;
 import android.widget.DatePicker;
 
 import androidx.test.espresso.contrib.PickerActions;
@@ -8,7 +7,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,21 +30,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(AndroidJUnit4.class)
 public class ApiInstrumentedTest {
 
     @Rule
     public ActivityTestRule<ListMeetingActivity> mListMeetingActivityRule = new ActivityTestRule<>(ListMeetingActivity.class);
-
-    @Before
-    public void setApiService() {
-        ListMeetingActivity listMeetingActivity = mListMeetingActivityRule.getActivity();
-        assertThat(listMeetingActivity, notNullValue());
-    }
 
     /*
     Check if the list of meetings in empty when we open the app
@@ -152,15 +142,7 @@ public class ApiInstrumentedTest {
     @Test
     public void listMeeting_meeting_shouldOpenFormMeetingWithInformation () throws ParseException {
         // Creation of a meeting
-        onView(withId(R.id.btn_add_meeting)).perform(click());
-        onView(withId(R.id.item_form_date)).perform(replaceText("20/01/2020"));
-        onView(withId(R.id.item_form_time)).perform(replaceText("12:30"));
-        onView(withId(R.id.item_form_subject)).perform(replaceText("First meeting test"));
-        onView(withId(R.id.btn_next_information)).perform(click());
-        onView(allOf(withId(3), withParent(withId(R.id.radio_group_meeting_room)))).perform(click());
-        onView(withId(R.id.btn_next_meeting_room)).perform(click());
-        onView(withId(R.id.btn_form_save)).perform(click());
-
+        createMeeting("20/01/2020", "12:30","First meeting test", 3);
 
         // Action on the first meeting
         onView(withId(R.id.activity_list_meeting)).perform(actionOnItemAtPosition(0, click()));
@@ -179,32 +161,9 @@ public class ApiInstrumentedTest {
     @Test
     public void listMeeting_shouldFilterMeetings() {
         // Creation of meetings
-        onView(withId(R.id.btn_add_meeting)).perform(click());
-        onView(withId(R.id.item_form_date)).perform(replaceText("20/01/2020"));
-        onView(withId(R.id.item_form_time)).perform(replaceText("12:30"));
-        onView(withId(R.id.item_form_subject)).perform(replaceText("Test n°1 - 20/01"));
-        onView(withId(R.id.btn_next_information)).perform(click());
-        onView(allOf(withId(3), withParent(withId(R.id.radio_group_meeting_room)))).perform(click());
-        onView(withId(R.id.btn_next_meeting_room)).perform(click());
-        onView(withId(R.id.btn_form_save)).perform(click());
-
-        onView(withId(R.id.btn_add_meeting)).perform(click());
-        onView(withId(R.id.item_form_date)).perform(replaceText("25/01/2020"));
-        onView(withId(R.id.item_form_time)).perform(replaceText("12:30"));
-        onView(withId(R.id.item_form_subject)).perform(replaceText("Test n°2 - 25/01"));
-        onView(withId(R.id.btn_next_information)).perform(click());
-        onView(allOf(withId(3), withParent(withId(R.id.radio_group_meeting_room)))).perform(click());
-        onView(withId(R.id.btn_next_meeting_room)).perform(click());
-        onView(withId(R.id.btn_form_save)).perform(click());
-
-        onView(withId(R.id.btn_add_meeting)).perform(click());
-        onView(withId(R.id.item_form_date)).perform(replaceText("20/01/2020"));
-        onView(withId(R.id.item_form_time)).perform(replaceText("12:30"));
-        onView(withId(R.id.item_form_subject)).perform(replaceText("Test n°3 - 20/01"));
-        onView(withId(R.id.btn_next_information)).perform(click());
-        onView(allOf(withId(1), withParent(withId(R.id.radio_group_meeting_room)))).perform(click());
-        onView(withId(R.id.btn_next_meeting_room)).perform(click());
-        onView(withId(R.id.btn_form_save)).perform(click());
+        createMeeting("20/01/2020", "16:45","Test n°1 - 20/01", 3);
+        createMeeting("25/01/2020", "12:30","Test n°2 - 25/01", 3);
+        createMeeting("20/01/2020", "12:30","Test n°3 - 20/01", 1);
 
         // Check if the size of the list equals 3
         onView(withId(R.id.activity_list_meeting)).check(matches(hasChildCount(3)));
@@ -213,7 +172,7 @@ public class ApiInstrumentedTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText("Filtrer par date")).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020,1,20));
-        onView(withText("Ok")).perform(click());
+        onView(withText("OK")).perform(click());
         // Check if the size of the list equals 2
         onView(withId(R.id.activity_list_meeting)).check(matches(hasChildCount(2)));
 
@@ -221,29 +180,20 @@ public class ApiInstrumentedTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText("Filtrer par salle")).perform(click());
 
-        //onView(allOf(withId(3), withParent(withId(R.id.radio_group_meeting_room)))).perform(click());
-        onView(withClassName(Matchers.equalTo(AlertDialog.Builder.class.getName()))).perform(click());
-        //onView(allOf(withClassName(Matchers.equalTo(AppCompatCheckedTextView.class.getName())), withText("Salle B")));
-        /*onView(withContentDescription("Salle D"))
-                .check(matches(isNotChecked()))
-                .perform(click())
-                .check(matches(isChecked()));*/
+        onView(withText("Salle B")).perform(click());
+        onView(withText("FERMER")).perform(click());
 
         // Check if the size of the list equals 1
         onView(withId(R.id.activity_list_meeting)).check(matches(hasChildCount(1)));
     }
 
+    /*
+    Check if a meeting is deleted
+     */
     @Test
     public void listMeeting_shouldDeleteAMeeting() {
         // Creation of a meeting
-        onView(withId(R.id.btn_add_meeting)).perform(click());
-        onView(withId(R.id.item_form_date)).perform(replaceText("20/01/2020"));
-        onView(withId(R.id.item_form_time)).perform(replaceText("12:30"));
-        onView(withId(R.id.item_form_subject)).perform(replaceText("Test n°1 - 20/01"));
-        onView(withId(R.id.btn_next_information)).perform(click());
-        onView(allOf(withId(3), withParent(withId(R.id.radio_group_meeting_room)))).perform(click());
-        onView(withId(R.id.btn_next_meeting_room)).perform(click());
-        onView(withId(R.id.btn_form_save)).perform(click());
+        createMeeting("20/01/2020", "12:30", "Test n°1 - 20/01", 3);
 
         // Check the size of the meeting
         onView(withId(R.id.activity_list_meeting)).check(matches(hasChildCount(1)));
@@ -253,5 +203,19 @@ public class ApiInstrumentedTest {
 
         // Check the size of the meeting
         onView(withId(R.id.activity_list_meeting)).check(matches(hasChildCount(0)));
+    }
+
+    /*
+    Create a new meeting
+     */
+    private void createMeeting(String date, String time, String subject, int meetingRoom) {
+        onView(withId(R.id.btn_add_meeting)).perform(click());
+        onView(withId(R.id.item_form_date)).perform(replaceText(date));
+        onView(withId(R.id.item_form_time)).perform(replaceText(time));
+        onView(withId(R.id.item_form_subject)).perform(replaceText(subject));
+        onView(withId(R.id.btn_next_information)).perform(click());
+        onView(allOf(withId(meetingRoom), withParent(withId(R.id.radio_group_meeting_room)))).perform(click());
+        onView(withId(R.id.btn_next_meeting_room)).perform(click());
+        onView(withId(R.id.btn_form_save)).perform(click());
     }
 }
