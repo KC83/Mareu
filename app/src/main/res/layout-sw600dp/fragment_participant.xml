@@ -14,8 +14,7 @@
         android:text="@string/textview_participant"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <AutoCompleteTextView
         android:id="@+id/autocomplete_participant"
@@ -48,8 +47,7 @@
         android:textSize="24sp"
         style="?android:attr/borderlessButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_form_save"
@@ -64,6 +62,5 @@
         android:textSize="24sp"
         android:textColor="@color/colorSuccess"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

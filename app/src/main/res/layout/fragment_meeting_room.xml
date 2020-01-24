@@ -14,8 +14,7 @@
         android:text="@string/text_meeting_room"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="0dp"
@@ -33,13 +32,11 @@
             android:layout_height="0dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
+            android:tag="sizeNormal"
             app:layout_constraintBottom_toTopOf="@+id/btn_back_meeting_room"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_meeting_room"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_meeting_room" />
     </ScrollView>
-
-
 
     <Button
         android:id="@+id/btn_back_meeting_room"
@@ -50,8 +47,7 @@
         android:text="@string/btn_back"
         style="?android:attr/borderlessButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_next_meeting_room"
@@ -62,6 +58,5 @@
         android:text="@string/btn_next"
         style="?android:attr/borderlessButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

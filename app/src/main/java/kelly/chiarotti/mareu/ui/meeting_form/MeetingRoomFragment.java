@@ -111,6 +111,12 @@ public class MeetingRoomFragment extends Fragment {
             radioButton[i].setText(meetingRoomList.get(i).getName());
             radioButton[i].setId(i);
 
+            // If we are with a tablet, with change the size of the text
+            if (radioGroup.getTag().toString().equals("sizeXL")) {
+                radioButton[i].setTextSize(24);
+                radioButton[i].setPadding(0,15,0,15);
+            }
+
             if (meetingRoom != null && meetingRoom.equals(meetingRoomList.get(i))) {
                 radioButton[i].setChecked(true);
             }

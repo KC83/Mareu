@@ -85,7 +85,7 @@ public class ParticipantFragment extends Fragment {
                 }
             }
 
-            mArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, mParticipantArrayList);
+            mArrayAdapter = new ArrayAdapter<>(context, R.layout.dropdown_participant, mParticipantArrayList);
             autoCompleteTextView.setAdapter(mArrayAdapter);
         }
 
@@ -97,7 +97,7 @@ public class ParticipantFragment extends Fragment {
             if (context != null) {
                 // Update list of participants in autocomplete (add deleted participant in the autocomplete list)
                 mParticipantArrayList.add(participant);
-                mArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, mParticipantArrayList);
+                mArrayAdapter = new ArrayAdapter<>(context, R.layout.dropdown_participant, mParticipantArrayList);
                 autoCompleteTextView.setAdapter(mArrayAdapter);
             }
         });
@@ -116,7 +116,7 @@ public class ParticipantFragment extends Fragment {
                     if (context != null) {
                         // Update list of participants in autocomplete (remove selected participant of autocomplete list)
                         mParticipantArrayList.remove(participant);
-                        mArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, mParticipantArrayList);
+                        mArrayAdapter = new ArrayAdapter<>(context, R.layout.dropdown_participant, mParticipantArrayList);
                         autoCompleteTextView.setAdapter(mArrayAdapter);
                     }
 

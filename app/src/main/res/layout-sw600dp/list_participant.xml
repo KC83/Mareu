@@ -15,8 +15,7 @@
         android:textColor="@color/colorText"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/item_list_delete_participant_button"

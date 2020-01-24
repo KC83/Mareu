@@ -8,16 +8,9 @@
     android:orientation="vertical"
     android:layout_margin="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:textSize="40sp"
-        tools:ignore="MissingConstraints" />
-
     <RadioGroup
          android:id="@+id/radio_group_meeting_room"
          android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         tools:ignore="MissingConstraints" />
+         android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
