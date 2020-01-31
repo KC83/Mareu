@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import kelly.chiarotti.mareu.R;
 import kelly.chiarotti.mareu.di.DI;
@@ -95,7 +96,11 @@ public class InformationFragment extends Fragment {
                     int year = cldr.get(Calendar.YEAR);
                     // date picker dialog
                     @SuppressLint("SetTextI18n")
-                    DatePickerDialog picker = new DatePickerDialog(context, (vw, year1, monthOfYear, dayOfMonth) -> date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1), year, month, day);
+                    DatePickerDialog picker = new DatePickerDialog(context, (vw, year1, monthOfYear, dayOfMonth) -> {
+                        String month_string = String.format(Locale.FRANCE,"%02d", monthOfYear+1);
+                        String day_string = String.format(Locale.FRANCE,"%02d", dayOfMonth);
+                        date.setText(day_string + "/" + month_string + "/" + year1);
+                    }, year, month, day);
                     picker.show();
                 });
                 // TIMEPICKER
@@ -103,8 +108,14 @@ public class InformationFragment extends Fragment {
                     final Calendar cldr = Calendar.getInstance();
                     int hour = cldr.get(Calendar.HOUR_OF_DAY);
                     int minutes = cldr.get(Calendar.MINUTE);
+
                     // time picker dialog
-                    @SuppressLint("SetTextI18n") TimePickerDialog picker = new TimePickerDialog(context, (tp, sHour, sMinute) -> time.setText(sHour + ":" + sMinute), hour, minutes, true);
+                    @SuppressLint("SetTextI18n") TimePickerDialog picker = new TimePickerDialog(context, (tp, sHour, sMinute) -> {
+                        String hour_string = String.format(Locale.FRANCE,"%02d", sHour);
+                        String minutes_string = String.format(Locale.FRANCE,"%02d", sMinute);
+
+                        time.setText(hour_string + ":" + minutes_string);
+                    }, hour, minutes, true);
                     picker.show();
                 });
             }

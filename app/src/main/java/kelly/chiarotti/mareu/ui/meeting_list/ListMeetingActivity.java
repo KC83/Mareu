@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import kelly.chiarotti.mareu.R;
 import kelly.chiarotti.mareu.di.DI;
@@ -128,21 +129,7 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int month = picker.getMonth() + 1;
-                String date = "";
-
-                if (month < 10) {
-                    if (picker.getDayOfMonth() < 10) {
-                        date = "0"+picker.getDayOfMonth()+"/0"+month+"/"+picker.getYear();
-                    } else {
-                        date = picker.getDayOfMonth()+"/0"+month+"/"+picker.getYear();
-                    }
-                } else {
-                    if (picker.getDayOfMonth() < 10) {
-                        date = "0"+picker.getDayOfMonth()+"/"+month+"/"+picker.getYear();
-                    } else {
-                        date = picker.getDayOfMonth()+"/"+month+"/"+picker.getYear();
-                    }
-                }
+                String date = String.format(Locale.FRANCE,"%02d", picker.getDayOfMonth())+"/"+String.format(Locale.FRANCE,"%02d", month)+"/"+picker.getYear();
 
                 List<Meeting> meetings = mApiService.getMeetingsByDate(date);
                 mAdapter = new ListMeetingAdapter(meetings, ListMeetingActivity.this);
