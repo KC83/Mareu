@@ -156,7 +156,7 @@ public class ListMeetingActivity extends AppCompatActivity implements View.OnCli
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Filtrer pas salle de réunion");
+        builder.setTitle("Filtrer par salle de réunion");
         builder.setMultiChoiceItems(meetingRooms, meetingRoomsChecked, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
